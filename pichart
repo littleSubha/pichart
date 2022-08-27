@@ -1,0 +1,296 @@
+ <style>
+.chart-box{
+   height:400px;
+   width:100%;
+}
+</style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Member Approval</span>
+                        <span class="info-box-number"><?= $dashboard_data->TOT_NEW_MEMBER;?></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Verified Members</span>
+                        <span class="info-box-number"><?= $dashboard_data->TOT_MEMBER_VERIFY;?></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Non Verified Members</span>
+                        <span class="info-box-number"><?= $dashboard_data->TOT_MEMBER_NONVERIFY;?></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Post Approval</span>
+                        <span class="info-box-number"><?= $dashboard_data->TOT_NEW_POST;?></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Active Posts</span>
+                        <span class="info-box-number"><?= $dashboard_data->TOT_POST;?></span>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <!-- Service wise all users and posts -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="chart-box card">
+                    <div id="service_user_piechart_3d" style="width:100%; height:100%;"></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="chart-box card">
+                    <div id="service_post_piechart_3d" style="width:100%; height:100%;"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+
+        <!-- service wise monthly users and posts -->
+        <div class="row">
+            <!-- <div class="col-12 col-sm-12 col-md-12">
+                <div class="chart-box card">
+                    <div id="monthly_service_user_piechart_3d" style="width:100%; height:100%;"></div>
+                </div>
+            </div> -->
+            <div class="col-12 col-sm-12 col-md-12">
+                <div class="chart-box card">
+                    <div class="m-4" id="monthly_service_post_piechart_3d" style="width:95%; height:100%;"></div>
+                </div>
+            </div>
+            
+        </div>
+
+
+    </div>
+</section> 
+
+<script>
+/** Service Wise User List */
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(serviceUserDrawChart);
+function serviceUserDrawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Service', 'Users'],
+        ['Matrimoney',    <?= $user_piechart->TOT_USER_MATRIMONY;?>],
+        ['Job',           <?= $user_piechart->TOT_USER_JOB;?>],
+        ['Service',       <?= $user_piechart->TOT_USER_SERVICE;?>],
+        ['Product',       <?= $user_piechart->TOT_USER_PRODUCT;?>],
+        ['Education',     <?= $user_piechart->TOT_USER_EDUCATION;?>],
+        ['Hotel',         <?= $user_piechart->TOT_USER_HOTEL;?>],      
+        ['Property',      <?= $user_piechart->TOT_USER_PROPERTY;?>],
+        ['Resale',        <?= $user_piechart->TOT_USER_RESALE;?>]
+       
+    ]);
+
+    var options = {
+        title: 'Service Wise Users',
+        titleTextStyle:{color: 'black',fontSize: 25},
+        is3D: true,
+        chartArea:{left:50,top:100,bottom:50,right:50,width:'100%',height:'100%'},
+        legend:{position: 'right','alignment':'center', textStyle: {color: 'blue', fontSize: 16,bold:true}},
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('service_user_piechart_3d'));
+    chart.draw(data, options);
+}
+
+
+
+
+/** Service Wise Post List */
+
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(servicePostDrawChart);
+function servicePostDrawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Service', 'Posts'],
+        ['Matrimoney',   <?= $post_piechart->TOT_POST_MATRIMONY;?>],
+        ['Job',           <?= $post_piechart->TOT_POST_JOB;?>],
+        ['Service',       <?= $post_piechart->TOT_POST_SERVICE;?>],
+        ['Product',       <?= $post_piechart->TOT_POST_PRODUCT;?>],
+        ['Education',     <?= $post_piechart->TOT_POST_EDUCATION;?>],
+        ['Hotel',         <?= $post_piechart->TOT_POST_HOTEL;?>],      
+        ['Property',      <?= $post_piechart->TOT_POST_PROPERTY;?>],
+        ['Resale',        <?= $post_piechart->TOT_POST_RESALE;?>]
+    ]);
+    
+    var options = {
+        title:'Service Wise Posts',
+        titleTextStyle:{color: 'black',fontSize: 25},
+        is3D: true,
+        chartArea:{left:50,top:100,bottom:50,right:50,width:'100%',height:'100%'},
+        legend:{position: 'right','alignment':'center', textStyle: {color: 'blue', fontSize: 16,bold:true}},
+       
+    };
+  
+    var chart = new google.visualization.PieChart(document.getElementById('service_post_piechart_3d'));
+    chart.draw(data, options);
+}
+
+/** Monthly Service Wise Post List */
+
+google.charts.load('current', {'packages':['bar']});
+google.charts.setOnLoadCallback(monthlyServicePostDrawChart);
+
+function monthlyServicePostDrawChart() {
+    var data = google.visualization.arrayToDataTable([
+        ['Month', 'Users', 'Posts'],
+        <?php foreach($monthly_reports as $data): ?>
+        ['<?= $data->month_name;?>', <?= $data->TOT_USER;?>, <?= $data->TOT_POST;?>],
+        <?php endforeach ?>
+       
+    ]);
+    
+    var options = {
+        
+        title: 'Company Performance Report',
+        titlePosition:'in',
+        titleTextStyle:{color: 'black',fontSize: 25,},
+        focusTarget: 'category',
+        chartArea:{left:100,top:100,bottom:50,right:150,width:'100%',height:'100%'},
+        legend:{position: 'bottom','alignment':'center', textStyle: {color: 'blue', fontSize: 16,bold:true}},
+        vAxis: {
+          title: 'Users and Posts',
+          textStyle: {
+            fontSize: 18,
+            color: '#67001f',
+            bold: false,
+            italic: false
+          },
+          titleTextStyle: {
+            fontSize: 18,
+            color: '#67001f',
+            bold: true,
+            italic: false
+          }
+        },
+      
+        
+    };
+    var chart = new google.charts.Bar(document.getElementById('monthly_service_post_piechart_3d'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+  
+}
+</script>
+
+
+
+
+<?php
+if(!defined('BASEPATH')) exit('No direct script access allowed!.');
+
+class DashboardModel extends CI_Model{
+    function __construct(){
+        parent::__construct();
+        $this->login_id=$this->session->userdata('user_id');
+        $this->login_name=$this->session->userdata('user_name');
+        $this->system_name=gethostname();
+    }
+    function get_dashboard_data(){
+        $sql="SELECT TOT_NEW_MEMBER,TOT_MEMBER_VERIFY,TOT_MEMBER_NONVERIFY,TOT_NEW_POST,TOT_POST FROM (
+            (SELECT COUNT(*) AS TOT_NEW_MEMBER FROM users_mst WHERE  user_cancel=1)AS TOT_NEW_MEMBER, 
+            (SELECT COUNT(*) AS TOT_MEMBER_VERIFY FROM users_mst WHERE is_verified=1  AND user_cancel=1)AS TOT_MEMBER_VERIFY,
+            (SELECT COUNT(*) AS TOT_MEMBER_NONVERIFY FROM users_mst WHERE is_verified=2  AND user_cancel=1)AS TOT_MEMBER_NONVERIFY,
+            (SELECT COUNT(*) AS TOT_NEW_POST FROM posts WHERE  post_isverified=2 AND post_cancel=1)AS TOT_NEW_POST, 
+            (SELECT COUNT(*) AS TOT_POST FROM posts WHERE post_isverified=1 AND post_cancel=1 AND post_status=1)AS TOT_POST 
+        )";
+        $query=$this->db->query($sql);
+        $row =$query->row();
+        return $row;
+    }
+    function service_wise_user_piechart_data(){
+        $sql="SELECT TOT_USER_MATRIMONY,TOT_USER_JOB,TOT_USER_SERVICE,TOT_USER_PRODUCT,TOT_USER_EDUCATION,TOT_USER_HOTEL,TOT_USER_PROPERTY,TOT_USER_RESALE FROM (
+            (SELECT COUNT(*) AS TOT_USER_MATRIMONY FROM users_mst WHERE user_serviceid=1 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_MATRIMONY, 
+            (SELECT COUNT(*) AS TOT_USER_JOB FROM users_mst WHERE user_serviceid=2 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_JOB,
+            (SELECT COUNT(*) AS TOT_USER_SERVICE FROM users_mst WHERE user_serviceid=3 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_SERVICE, 
+            (SELECT COUNT(*) AS TOT_USER_PRODUCT FROM users_mst WHERE user_serviceid=4 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_PRODUCT ,
+            (SELECT COUNT(*) AS TOT_USER_EDUCATION FROM users_mst WHERE  user_serviceid=5 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_EDUCATION, 
+            (SELECT COUNT(*) AS TOT_USER_HOTEL FROM users_mst WHERE user_serviceid=6 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_HOTEL,
+            (SELECT COUNT(*) AS TOT_USER_PROPERTY FROM users_mst WHERE  user_serviceid=7 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_PROPERTY, 
+            (SELECT COUNT(*) AS TOT_USER_RESALE FROM users_mst WHERE user_serviceid=8 AND user_cancel=1 AND user_status=1 AND is_verified=1)AS TOT_USER_RESALE 
+        )";
+        $query=$this->db->query($sql);
+        $row =$query->row();
+        return $row;
+    }
+    function service_wise_post_piechart_data(){
+        $sql="SELECT TOT_POST_MATRIMONY,TOT_POST_JOB,TOT_POST_SERVICE,TOT_POST_PRODUCT,TOT_POST_EDUCATION,TOT_POST_HOTEL,TOT_POST_PROPERTY,TOT_POST_RESALE FROM (
+            (SELECT COUNT(*) AS TOT_POST_MATRIMONY FROM matrimonial_profile WHERE  mat_cancel=1 AND mat_status=1)AS TOT_POST_MATRIMONY, 
+            (SELECT COUNT(*) AS TOT_POST_JOB FROM posts WHERE post_serviceid=2 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_JOB,
+            (SELECT COUNT(*) AS TOT_POST_SERVICE FROM posts WHERE post_serviceid=3 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_SERVICE, 
+            (SELECT COUNT(*) AS TOT_POST_PRODUCT FROM posts WHERE post_serviceid=4 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_PRODUCT ,
+            (SELECT COUNT(*) AS TOT_POST_EDUCATION FROM posts WHERE  post_serviceid=5 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_EDUCATION, 
+            (SELECT COUNT(*) AS TOT_POST_HOTEL FROM posts WHERE post_serviceid=6 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_HOTEL,
+            (SELECT COUNT(*) AS TOT_POST_PROPERTY FROM posts WHERE  post_serviceid=7 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_PROPERTY, 
+            (SELECT COUNT(*) AS TOT_POST_RESALE FROM posts WHERE post_serviceid=8 AND post_cancel=1 AND post_status=1 AND post_isverified=1)AS TOT_POST_RESALE 
+        )";
+        $query=$this->db->query($sql);
+        $row =$query->row();
+        return $row;
+    }
+    function monthly_wise_piechart_data(){
+        $sql="SELECT month_id,month_name, (SELECT COUNT(*) FROM users_mst WHERE user_cancel=1 AND DATE_FORMAT(user_regdate,'%m')=month_id AND user_status=1 AND is_verified=1 AND DATE_FORMAT(user_regdate, '%Y')='2022') AS TOT_USER, (SELECT COUNT(*) FROM posts WHERE post_cancel=1 AND DATE_FORMAT(post_date, '%m')=month_id AND post_status=1 AND post_isverified=1 AND DATE_FORMAT(post_date, '%Y')='2022') TOT_POST FROM (SELECT month_id,month_name FROM month)A";
+        $query=$this->db->query($sql);
+        $result =$query->result();
+        return $result;
+    }
+
+
+
+}
+
+
+
+
+
+<?php
+if(!defined('BASEPATH')) exit ('No direct script access allowed!.');
+
+class Dashboard extends CI_Controller{
+    function __construct(){
+        parent::__construct();
+        $this->load->model('backend/DashboardModel','dashboard',TRUE);
+    }
+    function index(){
+        $page_data['dashboard_data'] =$this->dashboard->get_dashboard_data();
+        $page_data['user_piechart'] =$this->dashboard->service_wise_user_piechart_data();
+        $page_data['post_piechart'] =$this->dashboard->service_wise_post_piechart_data();
+        $page_data['monthly_reports'] =$this->dashboard->monthly_wise_piechart_data();
+        $page_data['title']='Dashboard';
+        $page_data['page_name']='dashboard';
+        $this->load->view('backend/index',$page_data);
+    }
+    
+}
